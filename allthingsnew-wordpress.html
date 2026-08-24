@@ -1,0 +1,236 @@
+<!--
+  WordPress version of allthingsnew.html
+  --------------------------------------
+  How to use:
+  1. Upload sources/img/AllThingsNew-Colored.png and assets/ATN_Banner.png to your
+     WordPress Media Library, then replace those src/href paths below with the URLs
+     WordPress gives you (e.g. https://yoursite.com/wp-content/uploads/2026/08/xxx.png).
+  2. This page also includes a photo-composition generator: a visitor uploads their
+     own photo, it's placed under a transparent branded frame, and they download the
+     combined image. That needs one transparent-PNG "frame" file per format — a PNG
+     at the exact pixel size with the design/branding around the edges and a
+     TRANSPARENT center so the uploaded photo shows through. Create/export those and
+     upload them to Media Library, then replace these three paths (search for
+     data-frame="..." below):
+       - assets/frames/atn-facebook-frame.png   (1200x630)
+       - assets/frames/atn-story-frame.png      (1080x1920)
+       - assets/frames/atn-instagram-frame.png  (1080x1080)
+     Until those files exist at those URLs, each generator still works — it just
+     shows the visitor's photo without the frame overlay and displays a small notice.
+  3. Paste this entire block (including the <script> at the bottom) into a WordPress
+     "Custom HTML" block (block editor) or an HTML/Text widget/module. CSS is scoped
+     under .atn-wrap and JS is scoped to elements inside .atn-wrap, so it won't leak
+     into or clash with your theme.
+-->
+<div class="atn-wrap">
+  <style>
+    .atn-wrap{
+      --atn-white:#ffffff;--atn-blue:#292EAC;--atn-purple:#5D1A9A;
+      --atn-genevieve:#98348E;--atn-seattle:#51A4AC;--atn-accent:var(--atn-blue);
+      --atn-muted:#5D1A9A;--atn-bg:#ffffff;
+      font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif;
+      background:var(--atn-bg);color:#222;
+    }
+    .atn-wrap *{box-sizing:border-box}
+    .atn-wrap .atn-container{max-width:980px;margin:0 auto 40px;padding:28px;background:var(--atn-white);border-radius:10px;box-shadow:0 6px 18px rgba(41,46,172,.08)}
+    .atn-wrap header{display:flex;gap:18px;align-items:center}
+    .atn-wrap .atn-brand{display:inline-block;background:linear-gradient(135deg,var(--atn-blue),var(--atn-purple));color:var(--atn-white);padding:10px 14px;border-radius:10px;font-weight:700}
+    .atn-wrap h1{margin:0;font-size:1.6rem;color:var(--atn-blue)}
+    .atn-wrap p.atn-lead{color:var(--atn-muted);margin-top:6px}
+    .atn-wrap .atn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:22px}
+    .atn-wrap .atn-card{border:1px solid #e8dcf0;border-radius:8px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.98),var(--atn-white))}
+    .atn-wrap .atn-thumb{height:160px;background:linear-gradient(135deg,var(--atn-blue),var(--atn-purple));border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--atn-white);font-weight:700;margin-bottom:12px}
+    .atn-wrap .atn-meta{font-size:.95rem;color:#333;margin-bottom:12px}
+    .atn-wrap .atn-muted{color:var(--atn-muted);font-size:.88rem}
+    .atn-wrap .atn-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .atn-wrap .atn-actions + .atn-actions{margin-top:10px}
+    .atn-wrap .atn-btn{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600;border:none;cursor:pointer;font-family:inherit;font-size:.95rem}
+    .atn-wrap .atn-btn-download{background:var(--atn-blue);color:var(--atn-white)}
+    .atn-wrap .atn-btn-download:disabled{background:#a8abdb;cursor:not-allowed}
+    .atn-wrap .atn-btn-zip{background:var(--atn-genevieve);color:var(--atn-white)}
+    .atn-wrap .atn-btn-ghost{background:transparent;border:1px solid var(--atn-seattle);color:var(--atn-purple)}
+    .atn-wrap footer{margin-top:24px;color:var(--atn-muted);font-size:.88rem}
+    .atn-wrap .atn-share-text{background:#f5eefb;padding:12px;border-radius:8px;border:1px dashed var(--atn-seattle);color:var(--atn-purple);white-space:pre-wrap}
+    .atn-wrap .atn-top-banner{background:var(--atn-white);padding:14px 28px;display:flex;align-items:center;justify-content:center}
+    .atn-wrap .atn-top-banner img{height:56px;width:auto;display:block;max-width:100%}
+    .atn-wrap .atn-canvas-wrap{position:relative;margin-bottom:12px;border-radius:6px;overflow:hidden;background:repeating-conic-gradient(#eee 0% 25%,#f7f7f7 0% 50%) 0 0/16px 16px}
+    .atn-wrap .atn-canvas{display:block;width:100%;height:auto}
+    .atn-wrap .atn-upload-label input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .atn-wrap .atn-generator-note{font-size:.8rem;color:#a15c00;margin-top:6px;display:none}
+    .atn-wrap .atn-generator-note.is-visible{display:block}
+    @media (max-width:600px){
+      .atn-wrap .atn-container{padding:18px;border-radius:0}
+      .atn-wrap h1{font-size:1.25rem}
+      .atn-wrap .atn-top-banner{padding:10px 16px}
+      .atn-wrap .atn-top-banner img{height:40px}
+      .atn-wrap .atn-thumb{height:120px}
+      .atn-wrap .atn-btn{padding:10px 12px;flex:1 1 auto;justify-content:center}
+    }
+  </style>
+
+  <div class="atn-top-banner">
+    <img src="sources/img/AllThingsNew-Colored.png" alt="All Things New">
+  </div>
+  <main class="atn-container">
+    <header>
+      <div>
+        <h1>#AllThingsNew — Materiais ba Redes Sosiál.<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" preserveAspectRatio="xMidYMid meet" fill="#000000" style="width:0.9em;height:0.9em;vertical-align:-0.1em;margin-left:8px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#DC241F" d="M32 5H4a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4z"></path><path fill="#FFC726" d="M16 18L1.296 29.947c.079.072.16.141.244.207L23.667 18L1.54 5.846a4.037 4.037 0 0 0-.244.207L16 18z"></path><path fill="#141414" d="M1.296 6.053l-.002.001A3.99 3.99 0 0 0 0 9v18c0 1.166.499 2.216 1.296 2.947L16 18L1.296 6.053z"></path><path fill="#FFF" d="M4.761 19.01l.492 3.269l1.523-2.934l3.262.542l-2.32-2.355l1.523-2.934l-2.957 1.478l-2.32-2.355l.493 3.269L1.5 18.468z"></path></g></svg></h1>
+        <p class="atn-lead">Selesiona bo-nia foto rasik atu halo kompozisaun ho design "All Things New", depois deskarrega imajen ne'ebé kompletu ona hodi partilha iha redes sosiál.</p>
+      </div>
+    </header>
+
+    <section class="atn-grid" aria-label="Jerador imajen personalizadu">
+      <article class="atn-card atn-generator" data-width="1200" data-height="630" data-frame="assets/frames/atn-facebook-frame.png">
+        <div class="atn-canvas-wrap">
+          <canvas class="atn-canvas" width="1200" height="630"></canvas>
+        </div>
+        <div class="atn-meta">Imajen Horizontál • 1200×630</div>
+        <div class="atn-actions">
+          <label class="atn-btn atn-btn-ghost atn-upload-label">
+            Selesiona Foto
+            <input type="file" accept="image/*" class="atn-file-input">
+          </label>
+          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
+        </div>
+        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
+        <p><b>Uza hashtags:</b> #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</p>
+      </article>
+
+      <article class="atn-card atn-generator" data-width="1080" data-height="1920" data-frame="assets/frames/atn-story-frame.png">
+        <div class="atn-canvas-wrap">
+          <canvas class="atn-canvas" width="1080" height="1920"></canvas>
+        </div>
+        <div class="atn-meta">Vertikal Story • 1080×1920</div>
+        <div class="atn-actions">
+          <label class="atn-btn atn-btn-ghost atn-upload-label">
+            Selesiona Foto
+            <input type="file" accept="image/*" class="atn-file-input">
+          </label>
+          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
+        </div>
+        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
+        <p><b>Uza hashtags:</b> #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</p>
+      </article>
+
+      <article class="atn-card atn-generator" data-width="1080" data-height="1080" data-frame="assets/frames/atn-instagram-frame.png">
+        <div class="atn-canvas-wrap">
+          <canvas class="atn-canvas" width="1080" height="1080"></canvas>
+        </div>
+        <div class="atn-meta">Quadradu • 1080×1080</div>
+        <div class="atn-actions">
+          <label class="atn-btn atn-btn-ghost atn-upload-label">
+            Selesiona Foto
+            <input type="file" accept="image/*" class="atn-file-input">
+          </label>
+          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
+        </div>
+        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
+        <p><b>Uza hashtags:</b> #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</p>
+      </article>
+
+      <article class="atn-card">
+        <div class="atn-thumb">Logo</div>
+        <div class="atn-actions">
+          <a class="atn-btn atn-btn-download" href="assets/ATN_Banner.png" download>Deskarrega PNG - Kor</a>
+        </div>
+        <div class="atn-actions">
+          <a class="atn-btn atn-btn-download" href="assets/ATN_Banner.png" download>Deskarrega PNG - Metan</a>
+        </div>
+        <div class="atn-actions">
+          <a class="atn-btn atn-btn-download" href="assets/ATN_Banner.png" download>Deskarrega PNG - Mutin</a>
+        </div>
+        <div class="atn-muted" style="margin-top:10px">Naran arkivu: Logo_Kor.png, Logo_Metan.png, Logo_Mutin.png</div>
+      </article>
+    </section>
+
+    <section style="margin-top:22px">
+      <h2 style="margin:0 0 8px 0">Legenda rekomendadu no hashtags</h2>
+      <div class="atn-share-text">Ami kontenti tebes atu partilha kampanha "All Things New" — mak hamutuk ho ami hodi buka dalan foun no reinu foun. #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</div>
+      <p class="atn-muted" style="margin-top:10px">Dika: kopi legenda iha leten no paseta ba postu. Ajusta tama imajen iha lokál se presiza.</p>
+    </section>
+
+    <footer>
+      <div class="atn-muted">Modo hodi uza: Selesiona bo-nia foto rasik, depois deskarrega imajen kompostu no partilha iha redes sosiál ninian. Uza Hashtags: #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee.</div>
+    </footer>
+  </main>
+
+  <script>
+  (function(){
+    function drawCover(ctx, img, w, h){
+      var scale = Math.max(w / img.width, h / img.height);
+      var sw = w / scale, sh = h / scale;
+      var sx = (img.width - sw) / 2, sy = (img.height - sh) / 2;
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+    }
+
+    function initGenerator(card){
+      var w = parseInt(card.getAttribute('data-width'), 10);
+      var h = parseInt(card.getAttribute('data-height'), 10);
+      var framePath = card.getAttribute('data-frame');
+      var canvas = card.querySelector('.atn-canvas');
+      var ctx = canvas.getContext('2d');
+      var fileInput = card.querySelector('.atn-file-input');
+      var downloadBtn = card.querySelector('.atn-download-btn');
+      var note = card.querySelector('.atn-generator-note');
+
+      var frameImg = null;
+      var frameFailed = false;
+      var photoImg = null;
+
+      function render(){
+        ctx.clearRect(0, 0, w, h);
+        if (photoImg){
+          drawCover(ctx, photoImg, w, h);
+        } else {
+          ctx.fillStyle = '#e8e8f0';
+          ctx.fillRect(0, 0, w, h);
+        }
+        if (frameImg){
+          ctx.drawImage(frameImg, 0, 0, w, h);
+        }
+      }
+
+      var preload = new Image();
+      preload.crossOrigin = 'anonymous';
+      preload.onload = function(){ frameImg = preload; render(); };
+      preload.onerror = function(){
+        frameFailed = true;
+        if (note) note.classList.add('is-visible');
+        render();
+      };
+      preload.src = framePath;
+
+      fileInput.addEventListener('change', function(e){
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        var url = URL.createObjectURL(file);
+        var img = new Image();
+        img.onload = function(){
+          photoImg = img;
+          render();
+          downloadBtn.disabled = false;
+          URL.revokeObjectURL(url);
+        };
+        img.onerror = function(){ URL.revokeObjectURL(url); };
+        img.src = url;
+      });
+
+      downloadBtn.addEventListener('click', function(){
+        canvas.toBlob(function(blob){
+          if (!blob) return;
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'AllThingsNew_' + w + 'x' + h + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 'image/png');
+      });
+    }
+
+    var cards = document.querySelectorAll('.atn-wrap .atn-generator');
+    for (var i = 0; i < cards.length; i++) initGenerator(cards[i]);
+  })();
+  </script>
+</div>
