@@ -7,16 +7,27 @@
      WordPress gives you (e.g. https://yoursite.com/wp-content/uploads/2026/08/xxx.png).
   2. This page also includes a photo-composition generator: a visitor uploads their
      own photo, it's placed under a transparent branded frame, and they download the
-     combined image. That needs one transparent-PNG "frame" file per format — a PNG
-     at the exact pixel size with the design/branding around the edges and a
-     TRANSPARENT center so the uploaded photo shows through. Create/export those and
-     upload them to Media Library, then replace these three paths (search for
-     data-frame="..." below):
-       - assets/frames/atn-facebook-frame.png   (1200x630)
-       - assets/frames/atn-story-frame.png      (1080x1920)
-       - assets/frames/atn-instagram-frame.png  (1080x1080)
-     Until those files exist at those URLs, each generator still works — it just
-     shows the visitor's photo without the frame overlay and displays a small notice.
+     combined image. Each of the 3 formats uses two images (search for
+     data-frame="..." and data-placeholder="..." below):
+       - data-frame: a transparent-PNG overlay at the exact pixel size, with the
+         design/branding around the edges and a TRANSPARENT center so the uploaded
+         photo shows through once composited on top.
+       - data-placeholder: a plain image (can be opaque) shown inside the canvas
+         BEFORE the visitor uploads anything — e.g. an illustration/icon telling them
+         to upload their own photo. It's replaced the moment they pick a file and is
+         never part of the downloaded image.
+     Current status:
+       - Horizontal 1200x630: frame DONE (sources/img/frame/horizontal_socialmedia_1200x630.png).
+         Placeholder DONE (sources/img/horizontal_socialmedia_1200x630.jpg).
+       - Vertical 1080x1920: frame DONE (sources/img/frame/vertical_socialmedia_1080x1920.png).
+         Placeholder DONE (sources/img/vertical_socialmedia_1080x1920.jpg).
+       - Square 1080x1080: frame DONE (sources/img/frame/square_socialmedia_1080x1080.png).
+         Placeholder DONE (sources/img/square_socialmedia_1080x1080.jpg).
+     Upload each file to Media Library, then replace its path in the matching
+     data-frame/data-placeholder attribute with the URL WordPress gives you. Until a
+     frame file exists, that generator still works — it just shows the photo (or
+     placeholder) without the frame overlay and displays a small notice. Until a
+     placeholder file exists, the canvas just shows a plain gray box before upload.
   3. The styling lives in style.css (next to this file). Upload style.css to your
      Media Library too, then replace the href="style.css" below with the URL
      WordPress gives you for it. Alternatively, enqueue style.css from your theme
@@ -41,7 +52,7 @@
     </header>
 
     <section class="atn-grid" aria-label="Jerador imajen personalizadu">
-      <article class="atn-card atn-generator" data-width="1200" data-height="630" data-frame="assets/frames/atn-facebook-frame.png">
+      <article class="atn-card atn-generator" data-width="1200" data-height="630" data-frame="sources/img/frame/horizontal_socialmedia_1200x630.png" data-placeholder="sources/img/horizontal_socialmedia_1200x630.jpg">
         <div class="atn-canvas-wrap">
           <canvas class="atn-canvas" width="1200" height="630"></canvas>
         </div>
@@ -57,7 +68,7 @@
         <p><b>Uza hashtags:</b> #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</p>
       </article>
 
-      <article class="atn-card atn-generator" data-width="1080" data-height="1920" data-frame="assets/frames/atn-story-frame.png">
+      <article class="atn-card atn-generator" data-width="1080" data-height="1920" data-frame="sources/img/frame/vertical_socialmedia_1080x1920.png" data-placeholder="sources/img/vertical_socialmedia_1080x1920.jpg">
         <div class="atn-canvas-wrap">
           <canvas class="atn-canvas" width="1080" height="1920"></canvas>
         </div>
@@ -73,7 +84,7 @@
         <p><b>Uza hashtags:</b> #AllThingsNew #HopeStartsHere #EsperansaHahuIhaNee</p>
       </article>
 
-      <article class="atn-card atn-generator" data-width="1080" data-height="1080" data-frame="assets/frames/atn-instagram-frame.png">
+      <article class="atn-card atn-generator" data-width="1080" data-height="1080" data-frame="sources/img/frame/square_socialmedia_1080x1080.png" data-placeholder="sources/img/square_socialmedia_1080x1080.jpg">
         <div class="atn-canvas-wrap">
           <canvas class="atn-canvas" width="1080" height="1080"></canvas>
         </div>
@@ -128,6 +139,7 @@
       var w = parseInt(card.getAttribute('data-width'), 10);
       var h = parseInt(card.getAttribute('data-height'), 10);
       var framePath = card.getAttribute('data-frame');
+      var placeholderPath = card.getAttribute('data-placeholder');
       var canvas = card.querySelector('.atn-canvas');
       var ctx = canvas.getContext('2d');
       var fileInput = card.querySelector('.atn-file-input');
@@ -136,12 +148,15 @@
 
       var frameImg = null;
       var frameFailed = false;
+      var placeholderImg = null;
       var photoImg = null;
 
       function render(){
         ctx.clearRect(0, 0, w, h);
         if (photoImg){
           drawCover(ctx, photoImg, w, h);
+        } else if (placeholderImg){
+          drawCover(ctx, placeholderImg, w, h);
         } else {
           ctx.fillStyle = '#e8e8f0';
           ctx.fillRect(0, 0, w, h);
@@ -160,6 +175,13 @@
         render();
       };
       preload.src = framePath;
+
+      if (placeholderPath){
+        var placeholderPreload = new Image();
+        placeholderPreload.crossOrigin = 'anonymous';
+        placeholderPreload.onload = function(){ placeholderImg = placeholderPreload; render(); };
+        placeholderPreload.src = placeholderPath;
+      }
 
       fileInput.addEventListener('change', function(e){
         var file = e.target.files && e.target.files[0];
