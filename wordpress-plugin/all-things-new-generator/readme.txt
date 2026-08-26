@@ -26,7 +26,22 @@ files (color, black, white — horizontal and vertical).
 4. Add the shortcode `[all_things_new_generator]` to any page or post where you
    want the generator to appear.
 
+== Social sharing image ==
+
+On any page/post containing the shortcode, the plugin automatically prints
+Open Graph and Twitter Card meta tags pointing at the bundled
+`assets/img/cover.jpg`, so the link shows that image as its preview when
+shared on Facebook, WhatsApp, Twitter/X, LinkedIn, etc. To change the image,
+replace `assets/img/cover.jpg` in the plugin folder (keep the same filename)
+and update the `og:image:width` / `og:image:height` values in
+`all-things-new-generator.php` if the new image has different dimensions.
+
+If Yoast SEO, Rank Math, or All in One SEO is active, this plugin skips its
+own tags automatically (to avoid duplicates) — set the social/OG image for
+the page in that plugin's settings instead.
+
 == Changelog ==
 
 = 1.0.0 =
 * Initial release.
+* Automatic Open Graph / Twitter Card social preview image (cover.jpg).

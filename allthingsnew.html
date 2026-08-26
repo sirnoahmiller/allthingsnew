@@ -36,6 +36,20 @@
      "Custom HTML" block (block editor) or an HTML/Text widget/module. CSS is scoped
      under .atn-wrap and JS is scoped to elements inside .atn-wrap, so it won't leak
      into or clash with your theme.
+  5. Social share preview image: sources/img/cover.jpg is meant to be the image shown
+     when this page's link is shared on social media (Facebook, WhatsApp, Twitter/X,
+     LinkedIn, etc.) via Open Graph / Twitter Card tags. This HTML fragment has no
+     <head> of its own, so those tags can't be added here — set the image on the
+     WordPress page itself instead:
+       - If using the companion "All Things New – Social Media Generator" plugin
+         (see wordpress-plugin/), it does this automatically: it bundles cover.jpg
+         and prints the og:image/twitter:image tags for you on any page containing
+         the [all_things_new_generator] shortcode.
+       - If pasting this fragment directly (no plugin) and you use Yoast/Rank
+         Math/AIOSEO, upload cover.jpg to the Media Library and set it as that
+         page's Social/OG image in the SEO plugin's settings.
+       - Otherwise, set cover.jpg as the page's Featured Image — most themes and
+         SEO setups fall back to the featured image for og:image.
 -->
 <div class="atn-wrap">
   <link rel="stylesheet" href="style.css">

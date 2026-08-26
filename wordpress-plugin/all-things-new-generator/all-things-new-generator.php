@@ -31,6 +31,48 @@ function atng_register_assets() {
 add_action( 'wp_enqueue_scripts', 'atng_register_assets' );
 
 /**
+ * Output Open Graph / Twitter Card meta tags pointing at the campaign's
+ * cover.jpg on any singular page/post that contains the shortcode, so the
+ * link gets the right preview image when shared on social media.
+ *
+ * Skipped when a dedicated SEO plugin (Yoast, Rank Math, All in One SEO) is
+ * active, since those already manage og:image and set their own social image
+ * per page — set the image there instead to avoid duplicate/conflicting tags.
+ */
+function atng_output_social_meta() {
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'AIOSEO_VERSION' ) ) {
+		return;
+	}
+
+	$post = get_queried_object();
+	if ( ! ( $post instanceof WP_Post ) || ! has_shortcode( $post->post_content, 'all_things_new_generator' ) ) {
+		return;
+	}
+
+	$image_url = ATNG_URL . 'assets/img/cover.jpg';
+	$title     = get_the_title( $post );
+	$excerpt   = has_excerpt( $post ) ? get_the_excerpt( $post ) : get_bloginfo( 'description' );
+	?>
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="<?php echo esc_attr( $title ); ?>">
+	<meta property="og:description" content="<?php echo esc_attr( $excerpt ); ?>">
+	<meta property="og:url" content="<?php echo esc_url( get_permalink( $post ) ); ?>">
+	<meta property="og:image" content="<?php echo esc_url( $image_url ); ?>">
+	<meta property="og:image:width" content="800">
+	<meta property="og:image:height" content="450">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>">
+	<meta name="twitter:description" content="<?php echo esc_attr( $excerpt ); ?>">
+	<meta name="twitter:image" content="<?php echo esc_url( $image_url ); ?>">
+	<?php
+}
+add_action( 'wp_head', 'atng_output_social_meta', 5 );
+
+/**
  * [all_things_new_generator] shortcode output.
  */
 function atng_shortcode( $atts ) {
