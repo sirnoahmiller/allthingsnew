@@ -45,7 +45,7 @@
     var placeholderPath = card.getAttribute('data-placeholder');
     var canvas = card.querySelector('.atn-canvas');
     var ctx = canvas.getContext('2d');
-    var fileInput = card.querySelector('.atn-file-input');
+    var fileInputs = card.querySelectorAll('.atn-file-input');
     var downloadBtn = card.querySelector('.atn-download-btn');
     var note = card.querySelector('.atn-generator-note');
     var adjustHint = card.querySelector('.atn-adjust-hint');
@@ -98,7 +98,7 @@
       placeholderPreload.src = placeholderPath;
     }
 
-    fileInput.addEventListener('change', function(e){
+    function handleFileChange(e){
       var file = e.target.files && e.target.files[0];
       if (!file) return;
       var url = URL.createObjectURL(file);
@@ -113,7 +113,9 @@
       };
       img.onerror = function(){ URL.revokeObjectURL(url); };
       img.src = url;
-    });
+      e.target.value = '';
+    }
+    for (var fi = 0; fi < fileInputs.length; fi++) fileInputs[fi].addEventListener('change', handleFileChange);
 
     var dragging = false, lastX = 0, lastY = 0;
 

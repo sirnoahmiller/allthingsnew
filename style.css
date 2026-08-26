@@ -23,6 +23,7 @@
 .atn-wrap .atn-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .atn-wrap .atn-actions-grid .atn-btn{justify-content:center;text-align:center}
 .atn-wrap .atn-btn{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600;border:none;cursor:pointer;font-family:inherit;font-size:.95rem}
+.atn-wrap .atn-btn-icon{width:18px;height:18px;flex-shrink:0}
 .atn-wrap .atn-btn-download{background:var(--atn-blue);color:var(--atn-white)}
 .atn-wrap .atn-btn-download:disabled{background:#a8abdb;cursor:not-allowed}
 .atn-wrap .atn-btn-zip{background:var(--atn-genevieve);color:var(--atn-white)}

@@ -69,9 +69,17 @@ function atng_shortcode( $atts ) {
 	        <div class="atn-meta">Imajen Horizontál • 1200×630</div>
 	        <div class="atn-actions">
 	          <label class="atn-btn atn-btn-ghost atn-upload-label">
-	            Selesiona Foto
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+	            Tira Foto
+	            <input type="file" accept="image/*" capture="user" class="atn-file-input">
+	          </label>
+	          <label class="atn-btn atn-btn-ghost atn-upload-label">
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+	            Selesiona husi Galeria
 	            <input type="file" accept="image/*" class="atn-file-input">
 	          </label>
+	        </div>
+	        <div class="atn-actions">
 	          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
 	        </div>
 	        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
@@ -92,9 +100,17 @@ function atng_shortcode( $atts ) {
 	        <div class="atn-meta">Vertikal Story • 1080×1920</div>
 	        <div class="atn-actions">
 	          <label class="atn-btn atn-btn-ghost atn-upload-label">
-	            Selesiona Foto
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+	            Tira Foto
+	            <input type="file" accept="image/*" capture="user" class="atn-file-input">
+	          </label>
+	          <label class="atn-btn atn-btn-ghost atn-upload-label">
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+	            Selesiona husi Galeria
 	            <input type="file" accept="image/*" class="atn-file-input">
 	          </label>
+	        </div>
+	        <div class="atn-actions">
 	          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
 	        </div>
 	        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
@@ -115,9 +131,17 @@ function atng_shortcode( $atts ) {
 	        <div class="atn-meta">Quadradu • 1080×1080</div>
 	        <div class="atn-actions">
 	          <label class="atn-btn atn-btn-ghost atn-upload-label">
-	            Selesiona Foto
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+	            Tira Foto
+	            <input type="file" accept="image/*" capture="user" class="atn-file-input">
+	          </label>
+	          <label class="atn-btn atn-btn-ghost atn-upload-label">
+	            <svg class="atn-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+	            Selesiona husi Galeria
 	            <input type="file" accept="image/*" class="atn-file-input">
 	          </label>
+	        </div>
+	        <div class="atn-actions">
 	          <button type="button" class="atn-btn atn-btn-download atn-download-btn" disabled>Deskarrega Imajen</button>
 	        </div>
 	        <p class="atn-generator-note">Design frame seidauk disponivel — imajen download sei uza foto de'it, sem frame.</p>
