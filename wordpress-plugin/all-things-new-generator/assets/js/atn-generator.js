@@ -7,6 +7,35 @@
     }
   }
 
+  // Language switcher: kept in memory only for this page view — no cookies,
+  // no localStorage/sessionStorage. It resets to Tetum on every page load.
+  function applyLang(lang){
+    var wrap = document.querySelector('.atn-wrap');
+    if (!wrap) return;
+    var els = wrap.querySelectorAll('.atn-i18n');
+    for (var i = 0; i < els.length; i++){
+      var val = els[i].getAttribute('data-' + lang);
+      if (val !== null) els[i].innerHTML = val;
+    }
+    var attrEls = wrap.querySelectorAll('.atn-i18n-attr');
+    for (var j = 0; j < attrEls.length; j++){
+      var titleVal = attrEls[j].getAttribute('data-' + lang + '-title');
+      if (titleVal !== null){
+        attrEls[j].setAttribute('title', titleVal);
+        attrEls[j].setAttribute('aria-label', titleVal);
+      }
+    }
+    var ariaEls = wrap.querySelectorAll('.atn-i18n-aria');
+    for (var k = 0; k < ariaEls.length; k++){
+      var ariaVal = ariaEls[k].getAttribute('data-' + lang + '-aria');
+      if (ariaVal !== null) ariaEls[k].setAttribute('aria-label', ariaVal);
+    }
+    var btns = wrap.querySelectorAll('.atn-lang-btn');
+    for (var b = 0; b < btns.length; b++){
+      btns[b].classList.toggle('is-active', btns[b].getAttribute('data-lang') === lang);
+    }
+  }
+
   function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
 
   function drawCover(ctx, img, w, h){
@@ -194,6 +223,13 @@
   }
 
   ready(function(){
+    var langBtns = document.querySelectorAll('.atn-wrap .atn-lang-btn');
+    for (var lb = 0; lb < langBtns.length; lb++){
+      langBtns[lb].addEventListener('click', function(){
+        applyLang(this.getAttribute('data-lang'));
+      });
+    }
+
     var cards = document.querySelectorAll('.atn-wrap .atn-generator');
     for (var i = 0; i < cards.length; i++) initGenerator(cards[i]);
   });

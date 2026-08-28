@@ -7,7 +7,12 @@
 }
 .atn-wrap *{box-sizing:border-box}
 .atn-wrap .atn-container{max-width:980px;margin:0 auto 40px;padding:28px;background:var(--atn-white);border-radius:10px;box-shadow:0 6px 18px rgba(41,46,172,.08)}
-.atn-wrap header{display:flex;gap:18px;align-items:center}
+.atn-wrap header{display:flex;gap:18px;align-items:flex-start}
+.atn-wrap header > div:first-child{flex:1}
+.atn-wrap .atn-lang-switch{display:flex;gap:6px;flex-shrink:0}
+.atn-wrap .atn-lang-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--atn-seattle);background:var(--atn-white);color:var(--atn-purple);font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit}
+.atn-wrap .atn-lang-btn:hover{background:#f5eefb}
+.atn-wrap .atn-lang-btn.is-active{background:linear-gradient(135deg,var(--atn-blue),var(--atn-purple));color:var(--atn-white);border-color:transparent}
 .atn-wrap .atn-brand{display:inline-block;background:linear-gradient(135deg,var(--atn-blue),var(--atn-purple));color:var(--atn-white);padding:10px 14px;border-radius:10px;font-weight:700}
 .atn-wrap h1{margin:0;font-size:1.6rem;color:var(--atn-blue)}
 .atn-wrap p.atn-lead{color:var(--atn-muted);margin-top:6px}
@@ -33,8 +38,8 @@
 .atn-wrap .atn-btn-mutin{background:var(--atn-white);color:#222;border:1px solid #ccc}
 .atn-wrap footer{margin-top:24px;color:var(--atn-muted);font-size:.88rem}
 .atn-wrap .atn-share-text{background:#f5eefb;padding:12px;border-radius:8px;border:1px dashed var(--atn-seattle);color:var(--atn-purple);white-space:pre-wrap}
-.atn-wrap .atn-top-banner{background:var(--atn-white);padding:14px 28px;display:flex;align-items:center;justify-content:center}
-.atn-wrap .atn-top-banner img{height:56px;width:auto;display:block;max-width:100%}
+.atn-wrap .atn-top-banner{background:var(--atn-white);max-width:980px;margin:0 auto}
+.atn-wrap .atn-top-banner img{display:block;width:100%;height:auto}
 .atn-wrap .atn-canvas-wrap{position:relative;margin-bottom:12px;border-radius:6px;overflow:hidden;background:repeating-conic-gradient(#eee 0% 25%,#f7f7f7 0% 50%) 0 0/16px 16px}
 .atn-wrap .atn-canvas{display:block;width:100%;height:auto;touch-action:none;cursor:grab;user-select:none}
 .atn-wrap .atn-canvas.is-dragging{cursor:grabbing}
@@ -50,8 +55,7 @@
 @media (max-width:600px){
   .atn-wrap .atn-container{padding:18px;border-radius:0}
   .atn-wrap h1{font-size:1.25rem}
-  .atn-wrap .atn-top-banner{padding:10px 16px}
-  .atn-wrap .atn-top-banner img{height:40px}
+  .atn-wrap header{flex-wrap:wrap}
   .atn-wrap .atn-thumb{height:120px}
   .atn-wrap .atn-btn{padding:10px 12px;flex:1 1 auto;justify-content:center}
   .atn-wrap .atn-actions-grid{grid-template-columns:1fr}

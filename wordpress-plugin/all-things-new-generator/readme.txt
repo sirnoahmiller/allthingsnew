@@ -4,7 +4,7 @@ Tags: shortcode, image generator, social media, campaign
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,8 +15,9 @@ Adds a photo-composition tool for the "All Things New" campaign via a shortcode.
 Adds the `[all_things_new_generator]` shortcode. Visitors upload their own photo,
 drag/zoom/rotate it into place, and download it composited with the campaign's
 branded frame in three formats: horizontal (1200x630), story (1080x1920), and
-square (1080x1080). The card also offers direct downloads of the official logo
-files (color, black, white — horizontal and vertical).
+square (1080x1080). A TET/EN switcher in the header toggles all of the page's
+text between Tetum and English (kept in memory only for that page view — no
+cookies or storage are used).
 
 == Installation ==
 
@@ -41,6 +42,12 @@ own tags automatically (to avoid duplicates) — set the social/OG image for
 the page in that plugin's settings instead.
 
 == Changelog ==
+
+= 1.1.0 =
+* Header now shows the official Kor Horizontal logo (full-width, aligned to the content area) instead of the old AllThingsNew-Colored banner.
+* Added a TET/EN language switcher — no cookies/storage, resets to Tetum on reload.
+* Removed the "Logo Ofisiál" download card and the recommended-caption section to match the simplified page.
+* Simplified hashtag copy to just #AllThingsNew.
 
 = 1.0.0 =
 * Initial release.
