@@ -21,12 +21,31 @@ define( 'ATNG_URL', plugin_dir_url( __FILE__ ) );
 define( 'ATNG_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
- * Register (but don't force-load) the plugin's CSS/JS. They are only
- * enqueued when the [all_things_new_generator] shortcode actually runs.
+ * Register the plugin's CSS/JS, and enqueue them up front on any singular
+ * page/post whose content contains the shortcode.
+ *
+ * This has to happen here (on wp_enqueue_scripts, before wp_head prints the
+ * queued stylesheets) rather than inside atng_shortcode(). Shortcodes run
+ * later, while the theme is rendering the_content() in the page body — by
+ * then wp_head has already printed its <link> tags, so a style enqueued
+ * from inside the shortcode callback never makes it onto the page (scripts
+ * still work because wp_footer prints the script queue again later).
  */
 function atng_register_assets() {
 	wp_register_style( 'atn-generator', ATNG_URL . 'style.css', array(), ATNG_VERSION );
 	wp_register_script( 'atn-generator', ATNG_URL . 'assets/js/atn-generator.js', array(), ATNG_VERSION, true );
+
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	$post = get_queried_object();
+	if ( ! ( $post instanceof WP_Post ) || ! has_shortcode( $post->post_content, 'all_things_new_generator' ) ) {
+		return;
+	}
+
+	wp_enqueue_style( 'atn-generator' );
+	wp_enqueue_script( 'atn-generator' );
 }
 add_action( 'wp_enqueue_scripts', 'atng_register_assets' );
 
