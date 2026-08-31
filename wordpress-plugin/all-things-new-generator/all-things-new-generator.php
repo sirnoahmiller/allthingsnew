@@ -3,7 +3,7 @@
  * Plugin Name: All Things New – Social Media Generator
  * Plugin URI: https://example.com/
  * Description: Adds a [all_things_new_generator] shortcode with a photo-composition tool (visitors upload their own photo, position/zoom/rotate it, and download it composited with the "All Things New" campaign frame in horizontal, story, and square formats), plus a Tetum/English language switcher.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires at least: 5.5
  * Requires PHP: 7.0
  * Author: All Things New
@@ -16,23 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // No direct access.
 }
 
-define( 'ATNG_VERSION', '1.1.0' );
+define( 'ATNG_VERSION', '1.1.1' );
 define( 'ATNG_URL', plugin_dir_url( __FILE__ ) );
 define( 'ATNG_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
- * Register the plugin's CSS/JS, and enqueue them up front on any singular
+ * Register the plugin's JS, and enqueue it up front on any singular
  * page/post whose content contains the shortcode.
  *
- * This has to happen here (on wp_enqueue_scripts, before wp_head prints the
- * queued stylesheets) rather than inside atng_shortcode(). Shortcodes run
- * later, while the theme is rendering the_content() in the page body — by
- * then wp_head has already printed its <link> tags, so a style enqueued
- * from inside the shortcode callback never makes it onto the page (scripts
- * still work because wp_footer prints the script queue again later).
+ * The CSS is not handled here — it's printed inline by atng_shortcode()
+ * instead, since a style enqueued from inside a shortcode callback runs too
+ * late to make it into <head> (shortcodes fire while the theme renders
+ * the_content() in the body, after wp_head has already printed its <link>
+ * tags). Inlining sidesteps that entirely and skips a separate request.
  */
 function atng_register_assets() {
-	wp_register_style( 'atn-generator', ATNG_URL . 'style.css', array(), ATNG_VERSION );
 	wp_register_script( 'atn-generator', ATNG_URL . 'assets/js/atn-generator.js', array(), ATNG_VERSION, true );
 
 	if ( ! is_singular() ) {
@@ -44,7 +42,6 @@ function atng_register_assets() {
 		return;
 	}
 
-	wp_enqueue_style( 'atn-generator' );
 	wp_enqueue_script( 'atn-generator' );
 }
 add_action( 'wp_enqueue_scripts', 'atng_register_assets' );
@@ -95,12 +92,20 @@ add_action( 'wp_head', 'atng_output_social_meta', 5 );
  * [all_things_new_generator] shortcode output.
  */
 function atng_shortcode( $atts ) {
-	wp_enqueue_style( 'atn-generator' );
 	wp_enqueue_script( 'atn-generator' );
 
 	$img = trailingslashit( ATNG_URL . 'assets/img' );
 
 	ob_start();
+
+	static $style_printed = false;
+	if ( ! $style_printed ) {
+		$style_printed = true;
+		$css = file_get_contents( ATNG_PATH . 'style.css' );
+		if ( false !== $css ) {
+			echo '<style>' . $css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput -- static local CSS file, not user input.
+		}
+	}
 	?>
 	<div class="atn-wrap">
 

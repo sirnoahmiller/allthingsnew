@@ -4,7 +4,7 @@ Tags: shortcode, image generator, social media, campaign
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ own tags automatically (to avoid duplicates) — set the social/OG image for
 the page in that plugin's settings instead.
 
 == Changelog ==
+
+= 1.1.1 =
+* Fixed: the generator's styling could fail to load on the front end because the stylesheet was enqueued too late (inside the shortcode callback, after wp_head had already printed). The CSS is now printed inline with the shortcode's own output instead, so it always loads and no longer depends on enqueue timing.
 
 = 1.1.0 =
 * Header now shows the official Kor Horizontal logo (full-width, aligned to the content area) instead of the old AllThingsNew-Colored banner.
